@@ -54,15 +54,15 @@ public class RSBank implements RSItemArea{
 		return new RSItemSlot(children().get(slot), slot);
 	}
 	
-	public void withrawAt(int slot) {
+	public void withdrawAt(int slot) {
 		getItemSlot(slot).mouse(RSInput.MOUSE_LEFT);
 	}
 	
-	public void withraw(int id) {
+	public void withdraw(int id) {
 		findItem(id).mouse(RSInput.MOUSE_LEFT);
 	}
 	
-	public void withraw(String name) {
+	public void withdraw(String name) {
 		findItem(name).mouse(RSInput.MOUSE_LEFT);
 	}
 	
