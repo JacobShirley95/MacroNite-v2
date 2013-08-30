@@ -38,6 +38,10 @@ public class RSTile implements RSScreenObject{
 		this.y = y;
 	}
 	
+	public RSTile(int x, int y) {
+		this(new Point(x, y));
+	}
+
 	public RSItem[] getObjectsAtTile() {
 		List<RSItem> objs = new ArrayList<RSItem>();
 		
