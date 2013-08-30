@@ -72,7 +72,7 @@ public class Main implements Rs2ClassLoaderListener, Rs2CanvasListener, Runnable
 			System.out.println("error");
 			System.exit(1);
 		}
-		frame.setSize(1024, 800);
+		frame.setSize(765, 563);
 
 		frame.addWindowListener(new WindowListener() {
 
@@ -218,8 +218,17 @@ public class Main implements Rs2ClassLoaderListener, Rs2CanvasListener, Runnable
 	
 		try {
 			while (!stopT) {//"Class286.aClass162_4824.aClass358_10175.aFloatArray_6781
-				sc.run();
-				
+				//sc.run();
+				/*for (int i = 0; i < 100; i++) {
+					Object o = getValue("client.is.y");
+					//Field f = o.getClass().getDeclaredField("n");
+					//f.setAccessible(true);
+					Object o2 = o;// f.get(o);
+					if (o2 != null)
+						System.out.println(o2);
+					Thread.sleep(10);
+				}*/
+				System.out.println(applet.client.getEntityStack());
 				//762 = bank
 				//596 = login stuff
 				/*if (cl.getMyPlayer() != null && cl.getMyPlayer().getComposite() != null) {
@@ -320,9 +329,6 @@ public class Main implements Rs2ClassLoaderListener, Rs2CanvasListener, Runnable
 
 		Field[] fields = cls.getDeclaredFields();
 		for (Field f : fields) {
-			if (name.equals("n") && f.getName().equals("n") && !f.getType().getName().equals("ahb"))
-				continue;
-			
 			if (f.getName().equals(name))
 				return f;
 		}

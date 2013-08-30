@@ -1,5 +1,7 @@
 package org.macronite2.hooks;
 
+import java.util.Stack;
+
 public interface Client {
 	public Player[] getPlayers();
 	public Player getMyPlayer();
@@ -55,5 +57,5 @@ public interface Client {
 	public void setPositionArray(float[] data);
 	
 	public void getPositionArray(MovableEntity entity, int height, boolean whileShowing);
-	public boolean[] getBools();
+	public Stack getEntityStack();
 }
