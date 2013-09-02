@@ -1,6 +1,6 @@
 package org.macronite2.script.models;
 
-import org.macronite2.hooks.Transform3D;
+import org.macronite2.hooks.Viewport;
 
 public class RenderData {
 	public float[] data;
@@ -64,7 +64,7 @@ public class RenderData {
 		this.data[15] = var17;
 	}
 
-	public void setViewport(Transform3D var1) {
+	public void setViewport(Viewport var1) {
 		this.data[0] = var1.getFloat1();
 		this.data[1] = var1.getFloat5();
 		this.data[2] = var1.getFloat9();

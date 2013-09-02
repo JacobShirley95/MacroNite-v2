@@ -1,5 +1,6 @@
 package org.macronite2.hooks;
 
 public interface Entity {
-	public Transform3D get3DTransform();
+	public Viewport getViewport();
+	public GameCoord getWorldPos();
 }

@@ -57,5 +57,5 @@ public interface Client {
 	public void setPositionArray(float[] data);
 	
 	public void getPositionArray(MovableEntity entity, int height, boolean whileShowing);
-	public Stack getEntityStack();
+	public WorldObjects getEntityStack();
 }

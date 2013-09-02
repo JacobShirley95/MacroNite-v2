@@ -29,9 +29,16 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 
 import org.macronite2.hooks.Client;
+import org.macronite2.hooks.DoorDecor;
 import org.macronite2.hooks.Entity;
+import org.macronite2.hooks.GameCoord;
 import org.macronite2.hooks.MovableEntity;
+import org.macronite2.hooks.Player;
+import org.macronite2.hooks.SModel;
+import org.macronite2.hooks.SoftwareRenderer;
 import org.macronite2.hooks.StackNode;
+import org.macronite2.hooks.Tile;
+import org.macronite2.hooks.WorldObjects;
 import org.macronite2.rsapplet.Rs2Applet;
 import org.macronite2.rsapplet.Rs2Canvas;
 import org.macronite2.rsapplet.Rs2CanvasListener;
@@ -40,6 +47,7 @@ import org.macronite2.script.RuneScape;
 import org.macronite2.script.Script;
 import org.macronite2.script.map.RSCompass;
 import org.macronite2.script.math.RSMath;
+import org.macronite2.script.models.ModelRenderer;
 import org.macronite2.script.screen.RSInput;
 import org.macronite2.userscripts.AlWarriorKiller;
 import org.macronite2.userscripts.DebugScript;
@@ -177,7 +185,7 @@ public class Main implements Rs2ClassLoaderListener, Rs2CanvasListener, Runnable
 	@Override
 	public void onInitialise(Rs2Canvas rs2Canvas) {
 		this.canvas = rs2Canvas;
-		sc = new DebugScript(applet.client);
+		sc = new ModelRenderer(applet.client);
 		canvas.addPaintListener(sc);
 		if (t == null) {
 			t = new Thread(this);
@@ -231,12 +239,29 @@ public class Main implements Rs2ClassLoaderListener, Rs2CanvasListener, Runnable
 						System.out.println(o2);
 					Thread.sleep(10);
 				}*/
-				Object[] objs = new Object[applet.client.getEntityStack().size()];
-				applet.client.getEntityStack().copyInto(objs);
-				for (Object o : objs) {
-					if (((StackNode)o).getEntity() != null)
-						System.out.println(((StackNode)o).getEntity().getClass().getName());
-				}
+				/*Object o = cl.getEntityStack();
+				if (o != null) {
+					Player my = cl.getMyPlayer();
+					Field f = o.getClass().getDeclaredField("s");
+					f.setAccessible(true);
+					Object d1 = Array.get(f.get(o), my.getPlane());
+					Object d2 = Array.get(d1, my.getLocX1()+1);
+					Object d3 = Array.get(d2, my.getLocY1());
+					if (d3 != null) {
+					Field[] fields = d3.getClass().getDeclaredFields();
+					int c = 0;
+					for (Field f2 : fields) {
+						if (!Modifier.isStatic(f2.getModifiers()) && !f2.getType().isPrimitive()) {
+							f2.setAccessible(true);
+							
+							System.out.println(c+": "+f2.get(d3));
+							
+							c++;
+						}
+					}
+					}
+				}*/
+				
 				
 				//762 = bank
 				//596 = login stuff

@@ -1,6 +1,6 @@
 package org.macronite2.hooks;
 
-public interface Transform3D {
+public interface Viewport {
 	public float getFloat1();
 	public float getFloat2();
 	public float getFloat3();

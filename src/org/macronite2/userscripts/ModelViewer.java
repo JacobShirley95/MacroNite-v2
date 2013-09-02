@@ -1,4 +1,4 @@
-package org.macronite2;
+package org.macronite2.userscripts;
 
 import java.awt.Graphics;
 
