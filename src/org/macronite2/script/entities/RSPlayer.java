@@ -31,18 +31,6 @@ public class RSPlayer extends RSCharacter{
 	public long getModelID() {
 		return player.getComposite().getModelID();
 	}
-	
-	public static final RSPlayer findPlayer(String name) {
-		Client client = RuneScape.getClient();
-		int[] ints = client.getPlayerIndices();
-		Player[] players = client.getPlayers();
-		for (int i = 0; i < client.getPlayerCount(); i++) {
-			Player p = players[ints[i]];
-			if (p.getName().contains(name))
-				return new RSPlayer(p);
-		}
-		return null;
-	}
 
 	public boolean isAnimating() {
 		return getAnimation() > -1;

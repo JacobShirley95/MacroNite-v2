@@ -68,7 +68,7 @@ public class RSTile implements RSScreenObject{
 	}
 	
 	@Override
-	public Point toScreen() {
+	public Point getCentrePoint() {
 		return toScreen(0);
 	}
 	
@@ -83,6 +83,6 @@ public class RSTile implements RSScreenObject{
 
 	@Override
 	public void mouse(int button) {
-		RSInput.mouse(toScreen(), button);
+		RSInput.mouse(getCentrePoint(), button);
 	}
 }

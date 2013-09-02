@@ -34,8 +34,8 @@ public class RSAbilitySlot extends RSSlot{
 	}
 
 	@Override
-	public Point toScreen() {
-		return abilityBar.getComponent().getChild(SLOT_OFFSET+(index*5)).toScreen();
+	public Point getCentrePoint() {
+		return abilityBar.getComponent().getChild(SLOT_OFFSET+(index*5)).getCentrePoint();
 	}
 
 	@Override

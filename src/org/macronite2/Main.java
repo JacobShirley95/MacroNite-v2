@@ -47,10 +47,10 @@ import org.macronite2.script.RuneScape;
 import org.macronite2.script.Script;
 import org.macronite2.script.map.RSCompass;
 import org.macronite2.script.math.RSMath;
-import org.macronite2.script.models.ModelRenderer;
 import org.macronite2.script.screen.RSInput;
 import org.macronite2.userscripts.AlWarriorKiller;
 import org.macronite2.userscripts.DebugScript;
+import org.macronite2.userscripts.ModelRenderer;
 
 public class Main implements Rs2ClassLoaderListener, Rs2CanvasListener, Runnable, MouseListener {
 
@@ -229,7 +229,7 @@ public class Main implements Rs2ClassLoaderListener, Rs2CanvasListener, Runnable
 	
 		try {
 			while (!stopT) {//"Class286.aClass162_4824.aClass358_10175.aFloatArray_6781
-				//sc.run();
+				sc.run();
 				/*for (int i = 0; i < 100; i++) {
 					Object o = getValue("client.is.y");
 					//Field f = o.getClass().getDeclaredField("n");

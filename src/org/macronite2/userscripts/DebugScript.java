@@ -150,7 +150,7 @@ public class DebugScript extends Script {
 					comp2.getHeight());
 
 			if (comp2.groupID != 1477) {
-				Point p = comp2.toScreen();
+				Point p = comp2.getCentrePoint();
 				g2D.setColor(Color.RED);
 				g2D.drawString("ID: " + comp2.getTitle(), p.x - 50, p.y);
 				g2D.setColor(Color.GREEN);

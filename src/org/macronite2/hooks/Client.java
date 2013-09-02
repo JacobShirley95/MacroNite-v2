@@ -30,7 +30,7 @@ public interface Client {
 	public Renderer getCurrentRenderer();
 	public int getPlayerCount();
 	
-	public GameWorld getGameWorld();
+	public MapBase getMapBase();
 
 	public boolean[] getValidInterfaces();
 	

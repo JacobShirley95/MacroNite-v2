@@ -7,14 +7,21 @@ import org.macronite2.script.RuneScape;
 import org.macronite2.script.map.RSCompass;
 import org.macronite2.script.map.RSTile;
 import org.macronite2.script.math.RSMath;
+import org.macronite2.script.models.RSModel;
 import org.macronite2.script.screen.RSInput;
 import org.macronite2.script.screen.RSScreenObject;
 
-public abstract class RSCharacter implements RSScreenObject{
+public abstract class RSCharacter extends RSEntity {
 	private org.macronite2.hooks.RSCharacter character;
 	
 	public RSCharacter(org.macronite2.hooks.RSCharacter character) {
+		super(character);
 		this.character = character;
+	}
+	
+	@Override
+	public RSModel getModel() {
+		return null;
 	}
 	
 	public abstract String getName();
@@ -44,15 +51,16 @@ public abstract class RSCharacter implements RSScreenObject{
 		}
 	}
 	
+	public Point globalPos() {
+		return RSMath.localToGlobal(character.getLocX1(), character.getLocY1());
+	}
+	
+	public Point localPos() {
+		return new Point(character.getLocX1(), character.getLocY1());
+	}
+	
 	@Override
-	public Point toScreen() {
-		/*Point global = RSMath.localToGlobal(character.getLocX1(), character.getLocY1());
-		
-		RSTile tile = new RSTile(character.getPlane(), global);
-		RSTile tile2 = new RSTile(character.getPlane(), character.getLocX2(), character.getLocY2());
-		
-		Point p = tile.toScreen(getHeight());
-		Point p2 = tile2.toScreen(getHeight());*/
+	public Point getCentrePoint() {
 		float x = 0;
 		float y = 0;
 
@@ -71,29 +79,14 @@ public abstract class RSCharacter implements RSScreenObject{
 			}
 			
 			try {
-				Thread.currentThread().sleep(10);
+				Thread.sleep(10);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
 		RuneScape.getClient().setPositionArray(last);
 		
 		return new Point((int)x, (int)y);
-	}
-	
-	public Point toMM() {
-		Point p = RSMath.localToGlobal(character.getLocX1(), character.getLocY1());
-		return RSCompass.tileToMM(p.x, p.y);
-	}
-	
-	@Override
-	public void mouse(int button) {
-		RSInput.mouse(toScreen(), button);
-	}
-	
-	public void click() {
-		mouse(RSInput.MOUSE_MOVE);
 	}
 	
 	@Override

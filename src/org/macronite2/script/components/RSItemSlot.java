@@ -37,8 +37,8 @@ public class RSItemSlot extends RSSlot{
 	}
 
 	@Override
-	public Point toScreen() {
-		return slotComp.toScreen();
+	public Point getCentrePoint() {
+		return slotComp.getCentrePoint();
 	}
 
 	@Override

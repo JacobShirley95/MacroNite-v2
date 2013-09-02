@@ -15,7 +15,7 @@ public class RSInterfaceItem extends RSItem{
 	}
 
 	@Override
-	public Point toScreen() {
-		return slot.toScreen();
+	public Point getCentrePoint() {
+		return slot.getCentrePoint();
 	}
 }

@@ -59,7 +59,7 @@ public class RSCompass {
         int var13 = angleY * distX + angleX * distY >> 14;
         int var14 = distY * angleY - distX * angleX >> 14;
         
-		Point comp = compass.toScreen();
+		Point comp = compass.getCentrePoint();
 		
 		return new Point(comp.x + var13, comp.y - var14);
 	}

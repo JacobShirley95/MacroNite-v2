@@ -48,19 +48,6 @@ public class RSNPC extends RSCharacter {
 	}
 	
 	public boolean isOnScreen() {
-		return toScreen().x > 0;
-	}
-	
-	public static final RSNPC findNPC(String name) {
-		int npcsCount = RuneScape.getClient().getAvailableNPCS();
-		int[] npcIDs = RuneScape.getClient().getNPCIndices();
-		NodeList npcs = new NodeList(RuneScape.getClient().getNPCS());
-		for (int i = 0; i < npcsCount; i++) {
-			NPC npc = (NPC) ((NPCNode) npcs.getNode(npcIDs[i])).getObject();
-			if (npc.getName().contains(name)) {
-				return new RSNPC(npc);
-			}
-		}
-		return null;
+		return getCentrePoint().x > 0;
 	}
 }

@@ -25,7 +25,7 @@ public class RSOption extends Node implements RSInterfaceObject, RSScreenObject 
 	}
 	
 	@Override
-	public Point toScreen() {
+	public Point getCentrePoint() {
 		return new Point(getX()+getWidth()/2, getY()+getHeight()/2);
 	}
 
@@ -33,7 +33,7 @@ public class RSOption extends Node implements RSInterfaceObject, RSScreenObject 
 	public void mouse(int button) {
 		if (button == RSInput.MOUSE_RIGHT)
 			throw new UnsupportedOperationException("Do not right-click here.");
-		RSInput.mouse(toScreen(), button);
+		RSInput.mouse(getCentrePoint(), button);
 	}
 	
 	public void click() {

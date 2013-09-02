@@ -22,7 +22,7 @@ public class AlWarriorKiller extends Script{
 		RSNPC npc = RSNPC.findNPC("Al Kharid warrior");
 		if (npc == null)
 			return 0;
-		Point screen = npc.toScreen();
+		Point screen = npc.getCentrePoint();
 		if (screen.x > 0) {
 			if (menu.openOptions(screen.x, screen.y)) {
 				if (menu.clickOption("Attack")) {

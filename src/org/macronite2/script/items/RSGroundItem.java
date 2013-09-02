@@ -4,8 +4,9 @@ import java.awt.Point;
 
 import org.macronite2.script.RuneScape;
 import org.macronite2.script.map.RSTile;
+import org.macronite2.script.screen.RSLocatable;
 
-public class RSGroundItem extends RSItem{
+public class RSGroundItem extends RSItem implements RSLocatable {
 	public RSTile tile;
 	
 	public RSGroundItem(org.macronite2.hooks.RSObject rsObj, RSTile tile) {
@@ -24,7 +25,17 @@ public class RSGroundItem extends RSItem{
 	}
 
 	@Override
-	public Point toScreen() {
-		return tile.toScreen();
+	public Point getCentrePoint() {
+		return tile.getCentrePoint();
+	}
+
+	@Override
+	public int getX() {
+		return tile.x;
+	}
+
+	@Override
+	public int getY() {
+		return tile.y;
 	}
 }

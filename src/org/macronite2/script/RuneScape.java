@@ -22,7 +22,7 @@ public class RuneScape {
 	}
 	
 	public static MapBase getMapBase() {
-		return client.getGameWorld().getMapBase();
+		return client.getMapBase();
 	}
 	
 	public static Player getMyPlayer() {

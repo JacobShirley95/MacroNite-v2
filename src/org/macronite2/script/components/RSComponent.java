@@ -106,13 +106,13 @@ public class RSComponent implements RSInterfaceObject, RSScreenObject{
 	}
 	
 	@Override
-	public Point toScreen() {
+	public Point getCentrePoint() {
 		return new Point(getX()+getWidth()/2, getY()+getHeight()/2);
 	}
 	
 	@Override
 	public void mouse(int button) {
-		RSInput.mouse(toScreen(), button);
+		RSInput.mouse(getCentrePoint(), button);
 	}
 	
 	public void leftClick() {
