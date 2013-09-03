@@ -1,16 +1,14 @@
 package org.macronite2.script.entities;
 
-import org.macronite2.hooks.Client;
 import org.macronite2.hooks.Player;
-import org.macronite2.script.RuneScape;
-
+import org.macronite2.script.ScriptContext;
 
 public class RSPlayer extends RSCharacter{
 
 	private Player player;
 
-	public RSPlayer(Player player) {
-		super(player);
+	public RSPlayer(ScriptContext context, Player player) {
+		super(context, player);
 		this.player = player;
 	}
 

@@ -5,16 +5,18 @@ import java.awt.Polygon;
 
 import org.macronite2.hooks.SModel;
 import org.macronite2.hooks.Viewport;
-import org.macronite2.script.screen.RSInput;
+import org.macronite2.script.ScriptContext;
 import org.macronite2.script.screen.RSScreenObject;
 
 public class RSModel implements RSScreenObject{
 	private SModel model;
 	private Viewport viewport;
+	private ScriptContext context;
 
-	public RSModel(SModel model, Viewport viewport) {
+	public RSModel(ScriptContext context, SModel model, Viewport viewport) {
 		this.model = model;
 		this.viewport = viewport;
+		this.context = context;
 	}
 	
 	public Polygon getPolygon() {
@@ -39,20 +41,20 @@ public class RSModel implements RSScreenObject{
 			int var27 = ycoords[i];
 			int var28 = zcoords[i];
 
-			float var29 = renderData.data[2] * (float) var26
-					+ renderData.data[6] * (float) var27 + renderData.data[10]
-					* (float) var28 + renderData.data[14];
-			float var30 = renderData.data[3] * (float) var26
-					+ renderData.data[7] * (float) var27 + renderData.data[11]
-					* (float) var28 + renderData.data[15];
+			float var29 = renderData.data[2] * var26
+					+ renderData.data[6] * var27 + renderData.data[10]
+					* var28 + renderData.data[14];
+			float var30 = renderData.data[3] * var26
+					+ renderData.data[7] * var27 + renderData.data[11]
+					* var28 + renderData.data[15];
 			if (var29 >= -var30) {
-				float var31 = renderData.data[0] * (float) var26
-						+ renderData.data[4] * (float) var27
-						+ renderData.data[8] * (float) var28
+				float var31 = renderData.data[0] * var26
+						+ renderData.data[4] * var27
+						+ renderData.data[8] * var28
 						+ renderData.data[12];
-				float var32 = renderData.data[1] * (float) var26
-						+ renderData.data[5] * (float) var27
-						+ renderData.data[9] * (float) var28
+				float var32 = renderData.data[1] * var26
+						+ renderData.data[5] * var27
+						+ renderData.data[9] * var28
 						+ renderData.data[13];
 
 				float renderX = model.getRenderX();
@@ -60,9 +62,9 @@ public class RSModel implements RSScreenObject{
 				float scaleX = model.getScaleX();
 				float scaleY = model.getScaleY();
 
-				float x = (float) ((int) (renderX + (scaleX * var31)
+				float x = ((int) (renderX + (scaleX * var31)
 						/ var30));
-				float y = (float) ((int) (renderY + (scaleY * var32)
+				float y = ((int) (renderY + (scaleY * var32)
 						/ var30));
 
 				xes[i] = (int)x;
@@ -78,12 +80,13 @@ public class RSModel implements RSScreenObject{
 	@Override
 	public Point getCentrePoint() {
 		Polygon polygon = getPolygon();
-		return new Point(polygon.xpoints[polygon.npoints/2], polygon.ypoints[polygon.npoints/2]);
+		int p = polygon.npoints/2;
+		return new Point(polygon.xpoints[p], polygon.ypoints[p]);
 	}
 
 	@Override
 	public void mouse(int button) {
-		RSInput.mouse(getCentrePoint(), button);
+		context.input.mouse(getCentrePoint(), button);
 	}
 	
 	@Override

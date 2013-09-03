@@ -4,17 +4,13 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.macronite2.hooks.CacheNode;
 import org.macronite2.hooks.GroundDataNode;
 import org.macronite2.hooks.GroundObjectNode;
 import org.macronite2.hooks.MapBase;
 import org.macronite2.hooks.Node;
-import org.macronite2.hooks.SoftReference;
-import org.macronite2.script.RuneScape;
+import org.macronite2.script.ScriptContext;
 import org.macronite2.script.items.RSGroundItem;
 import org.macronite2.script.items.RSItem;
-import org.macronite2.script.math.RSMath;
-import org.macronite2.script.screen.RSInput;
 import org.macronite2.script.screen.RSScreenObject;
 import org.macronite2.script.util.node.IterableNodeList;
 import org.macronite2.script.util.node.NodeList;
@@ -23,35 +19,37 @@ public class RSTile implements RSScreenObject{
 	public int plane;
 	public int x;
 	public int y;
+	private ScriptContext context;
 	
-	public RSTile(Point p) {
-		this(RuneScape.getMyPlayer().getPlane(), p);
+	public RSTile(ScriptContext context, Point p) {
+		this(context, context.getPlane(), p);
 	}
 	
-	public RSTile(int plane, Point p) {
-		this(plane, p.x, p.y);
+	public RSTile(ScriptContext context, int plane, Point p) {
+		this(context, plane, p.x, p.y);
 	}
 	
-	public RSTile(int plane, int x, int y) {
+	public RSTile(ScriptContext context, int plane, int x, int y) {
 		this.plane = plane;
 		this.x = x;
 		this.y = y;
+		this.context = context;
 	}
 	
-	public RSTile(int x, int y) {
-		this(new Point(x, y));
+	public RSTile(ScriptContext context, int x, int y) {
+		this(context, new Point(x, y));
 	}
 
 	public RSItem[] getObjectsAtTile() {
 		List<RSItem> objs = new ArrayList<RSItem>();
 		
-		NodeList gI = new NodeList(RuneScape.getClient().getGroundObjects());
+		NodeList gI = new NodeList(context.runescape.getGroundObjects());
 		Node n = gI.getNode(plane << 28 | y << 14 | x);
 		if (n != null) {
 			GroundDataNode gdn = (GroundDataNode) n;
 			IterableNodeList inl = new IterableNodeList(gdn.getObjects());
 			for(GroundObjectNode go = (GroundObjectNode)inl.start(); null != go;) {
-				RSItem obj = new RSGroundItem((org.macronite2.hooks.RSObject)RuneScape.getClient().getCacheObjectLoader().loadObject(go.getID()), this);
+				RSItem obj = new RSGroundItem(context, context.runescape.getCacheObjectLoader().loadObject(go.getID()), this);
 				objs.add(obj);
 				go = (GroundObjectNode) inl.next();
 			}
@@ -61,7 +59,7 @@ public class RSTile implements RSScreenObject{
 	}
 
 	public Point toScreen(int heightOffset) {
-		MapBase base = RuneScape.getMapBase();
+		MapBase base = context.getMapBase();
 		int x = this.x - base.getX();
 		int y = this.y - base.getY();
 		return tileToScreen(x, y, heightOffset);
@@ -73,16 +71,16 @@ public class RSTile implements RSScreenObject{
 	}
 	
 	public Point toMM() {
-		return RSCompass.tileToMM(x, y);
+		return context.compass.tileToMM(x, y);
 	}
 	
 	private Point tileToScreen(int x, int y, int heightOffset) {
-		int height = RuneScape.getClient().getTileHeight(x << 9, y << 9, plane);
-		return RSMath.getScreenPosHidden(x << 9, height-heightOffset, y << 9);
+		int height = context.runescape.getTileHeight(x << 9, y << 9, plane);
+		return context.math.getScreenPosHidden(x << 9, height-heightOffset, y << 9);
 	}
 
 	@Override
 	public void mouse(int button) {
-		RSInput.mouse(getCentrePoint(), button);
+		context.input.mouse(getCentrePoint(), button);
 	}
 }

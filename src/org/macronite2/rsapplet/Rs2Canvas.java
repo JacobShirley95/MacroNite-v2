@@ -2,8 +2,6 @@ package org.macronite2.rsapplet;
 
 import java.awt.Canvas;
 import java.awt.Graphics;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;

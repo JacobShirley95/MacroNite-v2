@@ -1,11 +1,10 @@
 package org.macronite2.script.menus;
 
 import java.awt.Point;
-import java.awt.event.MouseEvent;
 import java.util.List;
 
-import org.macronite2.hooks.Client;
 import org.macronite2.hooks.OptionNode;
+import org.macronite2.script.ScriptContext;
 import org.macronite2.script.screen.RSInput;
 import org.macronite2.script.screen.RSInterfaceObject;
 import org.macronite2.script.screen.RSScreenObject;
@@ -16,12 +15,14 @@ public class RSOption extends Node implements RSInterfaceObject, RSScreenObject 
 	private OptionNode option;
 	private RSOptionsMenu menu;
 	private int index;
+	private ScriptContext context;
 	
-	public RSOption(OptionNode node, RSOptionsMenu menu, int index) {
+	public RSOption(ScriptContext context, OptionNode node, RSOptionsMenu menu, int index) {
 		super(node);
 		this.option = node;
 		this.menu = menu;
 		this.index = index;
+		this.context = context;
 	}
 	
 	@Override
@@ -33,7 +34,7 @@ public class RSOption extends Node implements RSInterfaceObject, RSScreenObject 
 	public void mouse(int button) {
 		if (button == RSInput.MOUSE_RIGHT)
 			throw new UnsupportedOperationException("Do not right-click here.");
-		RSInput.mouse(getCentrePoint(), button);
+		context.input.mouse(getCentrePoint(), button);
 	}
 	
 	public void click() {
@@ -84,5 +85,15 @@ public class RSOption extends Node implements RSInterfaceObject, RSScreenObject 
 	@Override
 	public String toString() {
 		return getOption()+" "+getOptionName();
+	}
+
+	@Override
+	public Node getNext() {
+		return new RSOption(context, (OptionNode)option.getNext(), menu, index+1);
+	}
+
+	@Override
+	public Node getBase() {
+		return new RSOption(context, (OptionNode)option.getBase(), menu, index-1);
 	}
 }

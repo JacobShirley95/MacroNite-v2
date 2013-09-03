@@ -2,26 +2,25 @@ package org.macronite2.script.items;
 
 import java.awt.Point;
 
-import org.macronite2.script.RuneScape;
+import org.macronite2.script.ScriptContext;
+import org.macronite2.script.location.RSLocatable;
 import org.macronite2.script.map.RSTile;
-import org.macronite2.script.screen.RSLocatable;
 
 public class RSGroundItem extends RSItem implements RSLocatable {
 	public RSTile tile;
 	
-	public RSGroundItem(org.macronite2.hooks.RSObject rsObj, RSTile tile) {
-		super(rsObj);
+	public RSGroundItem(ScriptContext context, org.macronite2.hooks.RSObject rsObj, RSTile tile) {
+		super(context, rsObj);
 		this.tile = tile;
 	}
 	
-	public RSGroundItem(org.macronite2.hooks.RSObject rsObj, int x, int y) {
-		super(rsObj);
-		this.tile = new RSTile(RuneScape.getPlane(), x, y);
+	public RSGroundItem(ScriptContext context, org.macronite2.hooks.RSObject rsObj, int x, int y) {
+		this(context, rsObj, new RSTile(context, context.getPlane(), x, y));
 	}
 	
-	public RSGroundItem(org.macronite2.hooks.RSObject rsObj, int plane, int x, int y) {
-		super(rsObj);
-		this.tile = new RSTile(plane, x, y);
+	public RSGroundItem(ScriptContext context, org.macronite2.hooks.RSObject rsObj, int plane, int x, int y) {
+		super(context, rsObj);
+		this.tile = new RSTile(context, plane, x, y);
 	}
 
 	@Override

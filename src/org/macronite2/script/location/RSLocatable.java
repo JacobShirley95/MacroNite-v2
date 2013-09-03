@@ -1,4 +1,4 @@
-package org.macronite2.script.screen;
+package org.macronite2.script.location;
 
 public interface RSLocatable {
 	public int getX();

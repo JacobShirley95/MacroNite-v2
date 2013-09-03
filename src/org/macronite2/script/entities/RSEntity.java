@@ -5,17 +5,18 @@ import java.awt.Point;
 import org.macronite2.hooks.Entity;
 import org.macronite2.hooks.GameCoord;
 import org.macronite2.hooks.Viewport;
-import org.macronite2.script.map.RSCompass;
-import org.macronite2.script.math.RSMath;
+import org.macronite2.script.ScriptContext;
 import org.macronite2.script.models.RSModel;
 import org.macronite2.script.screen.RSInput;
 import org.macronite2.script.screen.RSScreenObject;
 
 public abstract class RSEntity implements RSScreenObject{
 	private Entity entity;
+	protected ScriptContext context;
 	
-	public RSEntity(Entity entity) {
+	public RSEntity(ScriptContext context, Entity entity) {
 		this.entity = entity;
+		this.context = context;
 	}
 	
 	public abstract RSModel getModel();
@@ -26,7 +27,7 @@ public abstract class RSEntity implements RSScreenObject{
 	
 	@Override
 	public void mouse(int button) {
-		RSInput.mouse(getCentrePoint(), button);
+		context.input.mouse(getCentrePoint(), button);
 	}
 	
 	public void click() {
@@ -35,11 +36,11 @@ public abstract class RSEntity implements RSScreenObject{
 	
 	public Point toMM() {
 		GameCoord pos = entity.getWorldPos();
-		Point p = RSMath.localToGlobal((int)pos.getX() >> 9, (int)pos.getZ() >> 9);
-		return RSCompass.tileToMM(p.x, p.y);
+		Point p = context.math.localToGlobal((int)pos.getX() >> 9, (int)pos.getZ() >> 9);
+		return context.compass.tileToMM(p.x, p.y);
 	}
 	
 	public void clickMM() {
-		RSInput.mouse(toMM(), RSInput.MOUSE_LEFT);
+		context.input.mouse(toMM(), RSInput.MOUSE_LEFT);
 	}
 }

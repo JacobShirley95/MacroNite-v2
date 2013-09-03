@@ -1,20 +1,13 @@
 package org.macronite2.userscripts;
 
-import java.awt.Point;
-
-import org.macronite2.hooks.Client;
-import org.macronite2.hooks.Player;
 import org.macronite2.script.Script;
-import org.macronite2.script.entities.RSPlayer;
-import org.macronite2.script.items.RSItem;
-import org.macronite2.script.map.RSTile;
-import org.macronite2.script.math.RSMath;
+import org.macronite2.script.ScriptContext;
 
 
 public class WCER extends Script {
 
-	public WCER(Client runescape) {
-		super(runescape);
+	public WCER(ScriptContext context) {
+		super(context);
 	}
 
 	@Override

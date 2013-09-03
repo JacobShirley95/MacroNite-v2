@@ -3,20 +3,16 @@ package org.macronite2.script.entities;
 import java.awt.Point;
 
 import org.macronite2.hooks.RSInterfaceGroup;
-import org.macronite2.script.RuneScape;
-import org.macronite2.script.map.RSCompass;
-import org.macronite2.script.map.RSTile;
-import org.macronite2.script.math.RSMath;
+import org.macronite2.script.ScriptContext;
 import org.macronite2.script.models.RSModel;
-import org.macronite2.script.screen.RSInput;
-import org.macronite2.script.screen.RSScreenObject;
 
 public abstract class RSCharacter extends RSEntity {
 	private org.macronite2.hooks.RSCharacter character;
 	
-	public RSCharacter(org.macronite2.hooks.RSCharacter character) {
-		super(character);
+	public RSCharacter(ScriptContext context, org.macronite2.hooks.RSCharacter character) {
+		super(context, character);
 		this.character = character;
+		this.context = context;
 	}
 	
 	@Override
@@ -26,6 +22,10 @@ public abstract class RSCharacter extends RSEntity {
 	
 	public abstract String getName();
 	public abstract int getCombatLevel();
+	
+	public int getPlane() {
+		return character.getPlane();
+	}
 	
 	public boolean isMoving() {
 		return !character.isStationary();
@@ -52,7 +52,7 @@ public abstract class RSCharacter extends RSEntity {
 	}
 	
 	public Point globalPos() {
-		return RSMath.localToGlobal(character.getLocX1(), character.getLocY1());
+		return context.math.localToGlobal(character.getLocX1(), character.getLocY1());
 	}
 	
 	public Point localPos() {
@@ -64,10 +64,10 @@ public abstract class RSCharacter extends RSEntity {
 		float x = 0;
 		float y = 0;
 
-		float[] last = RuneScape.getClient().getPositionArrayData();
+		float[] last = context.runescape.getPositionArrayData();
 		for (int i = 0; i < 30; i++) {
-			RuneScape.getClient().getPositionArray(character, getHeight()/2, true);
-			float[] fs = RuneScape.getClient().getPositionArrayData();
+			context.runescape.getPositionArray(character, getHeight()/2, true);
+			float[] fs = context.runescape.getPositionArrayData();
 			
 			if (x == 0) {
 				x = fs[0];
@@ -78,13 +78,9 @@ public abstract class RSCharacter extends RSEntity {
 				break;
 			}
 			
-			try {
-				Thread.sleep(10);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+			context.sleep(10);
 		}
-		RuneScape.getClient().setPositionArray(last);
+		context.runescape.setPositionArray(last);
 		
 		return new Point((int)x, (int)y);
 	}

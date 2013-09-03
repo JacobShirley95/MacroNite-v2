@@ -2,20 +2,22 @@ package org.macronite2.script.components;
 
 import java.awt.Point;
 
-import org.macronite2.script.RuneScape;
+import org.macronite2.script.ScriptContext;
 import org.macronite2.script.items.RSInterfaceItem;
 
 public class RSItemSlot extends RSSlot{
 
 	private RSComponent slotComp;
+	private ScriptContext context;
 
-	public RSItemSlot(RSComponent slotComp, int index) {
+	public RSItemSlot(ScriptContext context, RSComponent slotComp, int index) {
 		super(index);
 		this.slotComp = slotComp;
+		this.context = context;
 	}
 	
 	public RSInterfaceItem getItem() {
-		return new RSInterfaceItem(RuneScape.getClient().getCacheObjectLoader().loadObject(getItemID()), this);
+		return new RSInterfaceItem(context, context.runescape.getCacheObjectLoader().loadObject(getItemID()), this);
 	}
 	
 	public int getItemID() {

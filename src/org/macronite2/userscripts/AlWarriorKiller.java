@@ -2,15 +2,15 @@ package org.macronite2.userscripts;
 
 import java.awt.Point;
 
-import org.macronite2.hooks.Client;
 import org.macronite2.script.Script;
+import org.macronite2.script.ScriptContext;
 import org.macronite2.script.entities.RSNPC;
 import org.macronite2.script.screen.RSInput;
 
 public class AlWarriorKiller extends Script{
 
-	public AlWarriorKiller(Client runescape) {
-		super(runescape);
+	public AlWarriorKiller(ScriptContext context) {
+		super(context);
 		// TODO Auto-generated constructor stub
 	}
 
@@ -19,7 +19,7 @@ public class AlWarriorKiller extends Script{
 		sleep(100);
 		if (!isLoggedIn())
 			return 0;
-		RSNPC npc = RSNPC.findNPC("Al Kharid warrior");
+		RSNPC npc = context.locator.findNPC("Al Kharid warrior");
 		if (npc == null)
 			return 0;
 		Point screen = npc.getCentrePoint();
@@ -31,7 +31,7 @@ public class AlWarriorKiller extends Script{
 						sleep(100);
 					long t = System.currentTimeMillis();
 					while (System.currentTimeMillis() < t+3000) {
-						if (runescape.getMyPlayer().getAnimation() > -1) {
+						if (context.getMyPlayer().isAnimating()) {
 							t = System.currentTimeMillis();
 						}
 						if (npc.getHeadInterfaces() != null)
@@ -44,7 +44,7 @@ public class AlWarriorKiller extends Script{
 			}
 		} else {
 			screen = npc.toMM();
-			RSInput.mouse(screen, RSInput.MOUSE_LEFT);
+			context.input.mouse(screen, RSInput.MOUSE_LEFT);
 			sleep(2000);
 			while (moving()) {
 				sleep(100);

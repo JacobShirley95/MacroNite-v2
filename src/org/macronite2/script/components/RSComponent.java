@@ -5,11 +5,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import org.macronite2.hooks.Client;
 import org.macronite2.hooks.RSInterface;
-import org.macronite2.hooks.RSInterfaceGroup;
 import org.macronite2.hooks.WidgetNode;
-import org.macronite2.script.RuneScape;
+import org.macronite2.script.ScriptContext;
 import org.macronite2.script.screen.RSInput;
 import org.macronite2.script.screen.RSInterfaceObject;
 import org.macronite2.script.screen.RSScreenObject;
@@ -25,10 +23,11 @@ public class RSComponent implements RSInterfaceObject, RSScreenObject{
 	public List<RSComponent> children;
 	
 	public org.macronite2.hooks.RSInterface rsInterface;
+	private ScriptContext context;
 	
 	private static final HashMap<Integer, RSComponent> loaded = new HashMap<Integer, RSComponent>();
 	
-	private RSComponent(RSComponent parent, RSInterface rsInterface) {
+	public RSComponent(ScriptContext context, RSComponent parent, RSInterface rsInterface) {
 		this.id = rsInterface.getID();
 		this.parentID = rsInterface.getParentID();
 		this.parent = parent;
@@ -36,9 +35,10 @@ public class RSComponent implements RSInterfaceObject, RSScreenObject{
 		this.groupID = id >> 16;
 		this.subID = id & 0xffff;
 		this.children = getChildren();
+		this.context = context;
 	}
 	
-	public RSComponent(RSComponent component) {
+	public RSComponent(ScriptContext context, RSComponent component) {
 		this.rsInterface = component.rsInterface;
 		this.id = rsInterface.getID();
 		this.parentID = rsInterface.getParentID();
@@ -46,6 +46,7 @@ public class RSComponent implements RSInterfaceObject, RSScreenObject{
 		this.groupID = component.groupID;
 		this.subID = component.subID;
 		this.children = component.children;
+		this.context = context;
 	}
 	
 	public boolean isVisible() {
@@ -56,9 +57,10 @@ public class RSComponent implements RSInterfaceObject, RSScreenObject{
 	}
 	
 	public boolean isValid() {
-		return RuneScape.getClient().getValidInterfaces()[rsInterface.getValidIndex()];
+		return rsInterface.getValidIndex() > -1;
 	}
 	
+	@Override
 	public int getX() {
 		int x = rsInterface.getX() - rsInterface.getScrollX();
 		if (parent != null)
@@ -66,6 +68,7 @@ public class RSComponent implements RSInterfaceObject, RSScreenObject{
 		return x;
 	}
 	
+	@Override
 	public int getY() {
 		int y = rsInterface.getY() - rsInterface.getScrollY();
 		if (parent != null)
@@ -73,10 +76,12 @@ public class RSComponent implements RSInterfaceObject, RSScreenObject{
 		return y;
 	}
 	
+	@Override
 	public int getWidth() {
 		return rsInterface.getWidth();
 	}
 	
+	@Override
 	public int getHeight() {
 		return rsInterface.getHeight();
 	}
@@ -112,20 +117,21 @@ public class RSComponent implements RSInterfaceObject, RSScreenObject{
 	
 	@Override
 	public void mouse(int button) {
-		RSInput.mouse(getCentrePoint(), button);
+		context.input.mouse(getCentrePoint(), button);
 	}
 	
 	public void leftClick() {
 		mouse(RSInput.MOUSE_LEFT);
 	}
 	
+	@Override
 	public List<RSComponent> getChildren() {
-		NodeList nl = new NodeList(RuneScape.getClient().getWidgets());
+		NodeList nl = new NodeList(context.runescape.getWidgets());
 		WidgetNode wn = (WidgetNode)nl.getNode(id);
 		if (wn != null) {
-			return getChildren(RuneScape.getClient().getInterfaceGroups()[wn.getWidgetID()].getInterfaces(), -1);
+			return getChildren(context.runescape.getInterfaceGroups()[wn.getWidgetID()].getInterfaces(), -1);
 		}
-		return getChildren(RuneScape.getClient().getInterfaceGroups()[groupID].getInterfaces(), this.id);
+		return getChildren(context.runescape.getInterfaceGroups()[groupID].getInterfaces(), this.id);
 	}
 	
 	private List<RSComponent> getChildren(org.macronite2.hooks.RSInterface[] faces, int id) {
@@ -133,7 +139,7 @@ public class RSComponent implements RSInterfaceObject, RSScreenObject{
 
 		for (org.macronite2.hooks.RSInterface rsInt : faces) {
 			if (rsInt != null && rsInt.getParentID() == id) {
-				RSComponent face = new RSComponent(this, rsInt);
+				RSComponent face = new RSComponent(context, this, rsInt);
 				faces2.add(face);
 			}
 		}
@@ -141,7 +147,7 @@ public class RSComponent implements RSInterfaceObject, RSScreenObject{
 		if (rsInterface.getChildren() != null) {
 			for (org.macronite2.hooks.RSInterface rsInt : rsInterface.getChildren()) {
 				if (rsInt != null && rsInt.getParentID() == id) {
-					RSComponent face = new RSComponent(this, rsInt);
+					RSComponent face = new RSComponent(context, this, rsInt);
 					face.parent = this;
 					faces2.add(face);
 				}
@@ -166,59 +172,8 @@ public class RSComponent implements RSInterfaceObject, RSScreenObject{
 		}
 		return null;
 	}
-	
-	public static RSComponent getWidget(int id) {
-		for (RSInterfaceGroup group : RuneScape.getClient().getInterfaceGroups())
-			if (group != null) {
-				RSComponent comp = getComponent(id, group.getInterfaces(), null, -1);
-				if (comp != null) {
-					return comp;
-				}
-		}
-		return null;
-	}
-	
-	private static RSComponent getComponent(int searchID, org.macronite2.hooks.RSInterface[] faces, RSComponent parent, int id) {
-		for (int i = 0; i < faces.length; i++) {
-			org.macronite2.hooks.RSInterface face = faces[i];
-			if (face != null && id == face.getParentID()) {
-				RSComponent intf = new RSComponent(parent, face);
-				if (face.getIndex() == 0) {
-					RSComponent intf2 = getComponent(searchID, faces,
-							intf, face.getID());
-	
-					if (intf2 == null && face.getChildren() != null) {
-						intf2 = getComponent(searchID, face.getChildren(), intf, face.getID());
-					}
-	
-					NodeList nl = new NodeList(RuneScape.getClient()
-							.getWidgets());
-					WidgetNode wn = (WidgetNode) nl.getNode(face.getID());
-					if (intf2 == null && wn != null) {
-						if (wn.getWidgetID() == searchID)
-							return intf;
-						org.macronite2.hooks.RSInterface[] faces2 = RuneScape
-								.getClient().getInterfaceGroups()[wn
-								.getWidgetID()].getInterfaces();
-						intf2 = getComponent(searchID, faces2, intf, -1);
-					}
-	
-					if (intf2 != null) {
-						return intf2;
-					}
-				}
-			}
-		}
-		return null;
-	}
 
 	public static final int getInterfaceID(int group, int sub) {
 		return (group << 16) | sub;
-	}
-	
-	protected static final RSInterface getInterfaceHook(int id) {
-		int group = id >> 16;
-		int sub = id & 0xffff;
-		return RuneScape.getClient().getInterfaceGroups()[group].getInterfaces()[sub];
 	}
 }

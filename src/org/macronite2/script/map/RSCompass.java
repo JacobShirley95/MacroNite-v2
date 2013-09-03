@@ -4,7 +4,7 @@ import java.awt.Point;
 
 import org.macronite2.hooks.Client;
 import org.macronite2.hooks.MapBase;
-import org.macronite2.script.RuneScape;
+import org.macronite2.script.ScriptContext;
 import org.macronite2.script.components.RSMinimapComponent;
 
 public class RSCompass {
@@ -19,36 +19,42 @@ public class RSCompass {
 			COS_ARRAY[var2] = (int) (16384.0D * Math.cos(var2 * var0));
 		}
 	}
+
+	private ScriptContext context;
+	
+	public RSCompass(ScriptContext context) {
+		this.context = context;
+	}
 	
 	private static RSMinimapComponent compass = null;
 
-	public static int getCompassAngle() {
-		Client cl = RuneScape.getClient();
+	public int getCompassAngle() {
+		Client cl = context.runescape;
 		return (int) (cl.getCameraAngle() * 2607.5945876176133D)
 				+ cl.getCameraOrigin() & 16383;
 	}
 
-	public static double getCompassAngleDegrees() {
+	public double getCompassAngleDegrees() {
 		return ((16383.0 - getCompassAngle()) / 16383.0) * 360.0;
 	}
 	
-	public static double getCompassAngleRadians() {
+	public double getCompassAngleRadians() {
 		return ((16383.0 - getCompassAngle()) / 16383.0) * (2 * Math.PI);
 	}
 
-	public static Point tileToMM(int x, int y) {
+	public Point tileToMM(int x, int y) {
 		if (compass == null)
-			compass = new RSMinimapComponent();
+			compass = new RSMinimapComponent(context);
 		
 		int angle = getCompassAngle();
 		
 		int angleX = SINE_ARRAY[angle];
 		int angleY = COS_ARRAY[angle];
 		
-		MapBase base = RuneScape.getMapBase();
+		MapBase base = context.getMapBase();
 		
-		int startX = RuneScape.getMyPlayer().getLocX1() << 9;
-		int startY = RuneScape.getMyPlayer().getLocY1() << 9;
+		int startX = context.runescape.getMyPlayer().getLocX1() << 9;
+		int startY = context.runescape.getMyPlayer().getLocY1() << 9;
 		
 		int tileX = x - base.getX() << 9;
 		int tileY = y - base.getY() << 9;

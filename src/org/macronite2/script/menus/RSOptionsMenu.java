@@ -1,54 +1,56 @@
 package org.macronite2.script.menus;
 
-import java.awt.Point;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.macronite2.hooks.Client;
 import org.macronite2.hooks.IterableNodeList;
 import org.macronite2.hooks.OptionNode;
+import org.macronite2.script.ScriptContext;
 import org.macronite2.script.screen.RSInput;
 import org.macronite2.script.screen.RSInterfaceObject;
-import org.macronite2.script.util.node.Node;
 
 public class RSOptionsMenu implements RSInterfaceObject{
-	private Client runescape;
-	public RSOptionsMenu(Client runescape) {
-		this.runescape = runescape;
+	private ScriptContext context;
+	public RSOptionsMenu(ScriptContext context) {
+		this.context = context;
 	}
 	
+	@Override
 	public int getX() {
-		return runescape.getOptionsBoxX();
+		return context.runescape.getOptionsBoxX();
 	}
 	
+	@Override
 	public int getY() {
-		return runescape.getOptionsBoxY();
+		return context.runescape.getOptionsBoxY();
 	}
 	
+	@Override
 	public int getWidth() {
-		return runescape.getOptionsBoxWidth();
+		return context.runescape.getOptionsBoxWidth();
 	}
 	
+	@Override
 	public int getHeight() {
-		return runescape.getOptionsBoxHeight();
+		return context.runescape.getOptionsBoxHeight();
 	}
 	
 	public int getOffset() {
-		return runescape.getOptionsBoxOffset();
+		return context.runescape.getOptionsBoxOffset();
 	}
 	
 	public int getOptionsCount() {
-		return runescape.getOptionsCount();
+		return context.runescape.getOptionsCount();
 	}
 	
 	public boolean optionsOpen() {
-		return runescape.isOptionsBoxOpen();
+		return context.runescape.isOptionsBoxOpen();
 	}
 
 	private IterableNodeList getOptionsList() {
-		return runescape.getOptions();
+		return context.runescape.getOptions();
 	}
 	
 	public RSOption[] getOptions() {
@@ -59,8 +61,8 @@ public class RSOptionsMenu implements RSInterfaceObject{
 	}
 	
 	public boolean openOptions(int x, int y) {
-		RSInput.mouse(x, y, RSInput.MOUSE_RIGHT);
-		return runescape.isOptionsBoxOpen();
+		context.input.mouse(x, y, RSInput.MOUSE_RIGHT);
+		return context.runescape.isOptionsBoxOpen();
 	}
 	
 	public boolean clickOption(String option) {
@@ -80,7 +82,7 @@ public class RSOptionsMenu implements RSInterfaceObject{
 		Iterator<?> it = inl.iterator();
 		int c = getOptionsCount()-1;
 		while (it.hasNext()) {
-			options.add(new RSOption((OptionNode)it.next(), this, c--));
+			options.add(new RSOption(context, (OptionNode)it.next(), this, c--));
 		}
 		return options;
 	}

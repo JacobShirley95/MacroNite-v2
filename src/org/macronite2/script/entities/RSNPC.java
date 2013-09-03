@@ -1,15 +1,13 @@
 package org.macronite2.script.entities;
 
 import org.macronite2.hooks.NPC;
-import org.macronite2.hooks.NPCNode;
-import org.macronite2.script.RuneScape;
-import org.macronite2.script.util.node.NodeList;
+import org.macronite2.script.ScriptContext;
 
 public class RSNPC extends RSCharacter {
 	private NPC npc;
 	
-	public RSNPC(NPC npc) {
-		super(npc);
+	public RSNPC(ScriptContext context, NPC npc) {
+		super(context, npc);
 		this.npc = npc;
 	}
 

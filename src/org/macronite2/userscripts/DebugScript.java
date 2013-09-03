@@ -5,41 +5,25 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.RenderingHints.Key;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
-import java.util.List;
-
 import javax.swing.JFrame;
 import javax.swing.JTextField;
 
-import org.macronite2.hooks.Client;
-import org.macronite2.hooks.Player;
 import org.macronite2.hooks.RSInterface;
 import org.macronite2.hooks.RSInterfaceGroup;
 import org.macronite2.hooks.WidgetNode;
-import org.macronite2.rsapplet.Rs2Canvas;
-import org.macronite2.script.RuneScape;
 import org.macronite2.script.Script;
-import org.macronite2.script.components.RSBackpack;
+import org.macronite2.script.ScriptContext;
 import org.macronite2.script.components.RSBank;
 import org.macronite2.script.components.RSComponent;
-import org.macronite2.script.components.RSMinimapComponent;
-import org.macronite2.script.components.abilitybar.RSAbilityBar;
-import org.macronite2.script.entities.RSNPC;
-import org.macronite2.script.entities.RSPlayer;
-import org.macronite2.script.menus.RSOption;
-import org.macronite2.script.screen.RSInput;
 import org.macronite2.script.util.node.NodeList;
 
 public class DebugScript extends Script {
 
 	private JTextField jtf;
 
-	public DebugScript(Client runescape) {
-		super(runescape);
+	public DebugScript(ScriptContext context) {
+		super(context);
 
 		JFrame frame = new JFrame("Interface Debug v0.1");
 		jtf = new JTextField("");
@@ -62,14 +46,14 @@ public class DebugScript extends Script {
 		g2D.setColor(Color.GREEN);
 		g2D.setStroke(new BasicStroke(1f));
 
-		RSInterfaceGroup[] groups = runescape.getInterfaceGroups();
+		RSInterfaceGroup[] groups = context.runescape.getInterfaceGroups();
 		if (groups != null) {
 			RSInterfaceGroup group = groups[1477];
 			if (widgets == null) {
 				widgets = new RSComponent[groups.length];
 				for (int i = 0; i < groups.length; i++)
 					if (groups[i] != null) {
-						widgets[i] = RSComponent.getWidget(i);
+						widgets[i] = context.locator.getWidget(i);
 						
 					}
 			}
@@ -95,7 +79,7 @@ public class DebugScript extends Script {
 			try {
 				//.getChild(137)
 				//if (widgets[762] == null) {
-					widgets[762] = RSComponent.getWidget(762);
+					widgets[762] = context.locator.getWidget(762);
 					if (widgets[762] == null)
 						return;
 				//}
@@ -183,15 +167,13 @@ public class DebugScript extends Script {
 								face.getID(), x - face.getScrollX(),
 								y - face.getScrollY(), true, path2);
 
-					NodeList nl = new NodeList(RuneScape.getClient()
-							.getWidgets());
+					NodeList nl = new NodeList(context.runescape.getWidgets());
 
 					WidgetNode wn = (WidgetNode) nl.getNode(face.getID());
 					if (wn != null
-							&& RuneScape.getClient().getValidInterfaces()[wn
+							&& context.runescape.getValidInterfaces()[wn
 									.getWidgetID()]) {
-						RSInterface[] faces2 = RuneScape.getClient()
-								.getInterfaceGroups()[wn.getWidgetID()]
+						RSInterface[] faces2 = context.runescape.getInterfaceGroups()[wn.getWidgetID()]
 								.getInterfaces();
 						displayInterfaces(group, g2D, faces2, -1,
 								x - face.getScrollX(), y - face.getScrollY(),
@@ -238,11 +220,11 @@ public class DebugScript extends Script {
 		if (!isLoggedIn())
 			return 10;
 		
-		RSBank bank = new RSBank();
+		RSBank bank = new RSBank(context);
 		if (bank.isOpen()) {
-			RSInput.typeKey(KeyEvent.VK_ENTER);
-			RSInput.typeKeys("My bank is open!");
-			RSInput.typeKey(KeyEvent.VK_ENTER);
+			context.input.typeKey(KeyEvent.VK_ENTER);
+			context.input.typeKeys("My bank is open!");
+			context.input.typeKey(KeyEvent.VK_ENTER);
 		}
 		
 		return EXIT_CODE;
