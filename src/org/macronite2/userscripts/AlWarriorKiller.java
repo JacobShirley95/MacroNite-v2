@@ -11,7 +11,6 @@ public class AlWarriorKiller extends Script{
 
 	public AlWarriorKiller(ScriptContext context) {
 		super(context);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
@@ -24,8 +23,8 @@ public class AlWarriorKiller extends Script{
 			return 0;
 		Point screen = npc.getCentrePoint();
 		if (screen.x > 0) {
-			if (menu.openOptions(screen.x, screen.y)) {
-				if (menu.clickOption("Attack")) {
+			if (context.optionsMenu.openOptions(screen.x, screen.y)) {
+				if (context.optionsMenu.clickOption("Attack")) {
 					sleep(2000);
 					while (moving())
 						sleep(100);

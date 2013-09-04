@@ -2,6 +2,8 @@ package org.macronite2.userscripts;
 
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.event.KeyEvent;
+
 import org.macronite2.hooks.DoorDecor;
 import org.macronite2.hooks.Player;
 import org.macronite2.hooks.SModel;
@@ -16,7 +18,7 @@ public class ModelRenderer extends Script {
 		super(context);
 	}
 
-	@Override
+	/*@Override
 	public void paint(Graphics g) {
 		Graphics2D g2D = (Graphics2D) g;
 		WorldObjects objs = context.runescape.getWorldObjects();
@@ -32,12 +34,16 @@ public class ModelRenderer extends Script {
 				}
 			}
 		}
-	}
+	}*/
 
 	@Override
 	public int run() {
 		if (!isLoggedIn())
 			return -1;
+		
+		context.input.typeKey(KeyEvent.VK_ENTER);
+		context.input.typeKeys("hello");
+		//context.input.typeKey(KeyEvent.VK_ENTER);
 		
 		return 0;
 	}

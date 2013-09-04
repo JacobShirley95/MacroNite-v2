@@ -1,5 +1,6 @@
 package org.macronite2.script.components;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.macronite2.script.ScriptContext;
@@ -41,6 +42,17 @@ public class RSBackpack implements RSItemArea{
 	@Override
 	public RSItemSlot getItemSlot(int slot) {
 		return new RSItemSlot(context, children().get(slot), slot);
+	}
+	
+	public RSItemSlot[] getItems() {
+		List<RSItemSlot> slots = new ArrayList<>();
+		for (int i = 0; i < children().size(); i++) {
+			RSItemSlot slot = getItemSlot(i);
+			if (slot.getItemID() != -1)
+				slots.add(slot);
+		}
+		RSItemSlot[] rSlots = new RSItemSlot[slots.size()];
+		return slots.toArray(rSlots);
 	}
 	
 	private List<RSComponent> children() {

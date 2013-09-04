@@ -2,6 +2,8 @@ package org.macronite2.rsapplet;
 
 import java.awt.Canvas;
 import java.awt.Graphics;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
@@ -10,7 +12,7 @@ import java.util.List;
 
 import org.macronite2.script.listeners.RSPaintListener;
 
-public class Rs2Canvas extends Canvas implements MouseMotionListener {
+public class Rs2Canvas extends Canvas implements MouseMotionListener, KeyListener {
 	private static final long serialVersionUID = 1L;
 	private BufferedImage gameImage;
 	private List<RSPaintListener> listeners = new LinkedList<>();
@@ -23,6 +25,7 @@ public class Rs2Canvas extends Canvas implements MouseMotionListener {
 	
 	public Rs2Canvas() {	
 		addMouseMotionListener(this);
+		addKeyListener(this);
 		gameImage = new BufferedImage(1024, 800, BufferedImage.TYPE_INT_RGB);
 		/*addComponentListener(new ComponentAdapter() {
 
@@ -71,5 +74,22 @@ public class Rs2Canvas extends Canvas implements MouseMotionListener {
 	public void mouseMoved(MouseEvent arg0) {
 		MOUSE_X = arg0.getX();
 		MOUSE_Y = arg0.getY();
+	}
+
+	@Override
+	public void keyPressed(KeyEvent arg0) {
+		System.out.println((int)'c'+", "+arg0.getKeyCode());
+	}
+
+	@Override
+	public void keyReleased(KeyEvent arg0) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyTyped(KeyEvent arg0) {
+		// TODO Auto-generated method stub
+		
 	}
 }

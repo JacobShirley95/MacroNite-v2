@@ -13,6 +13,8 @@ import org.macronite2.script.items.RSInterfaceItem;
 import org.macronite2.script.util.node.NodeList;
 
 public abstract class RSLocator {
+	private static final int MAX_RADIUS = 52;
+	
 	protected ScriptContext context;
 	public RSLocator(ScriptContext context) {
 		this.context = context;
@@ -65,6 +67,10 @@ public abstract class RSLocator {
 			}
 		}
 		return null;
+	}
+	
+	protected void spiralSearch(SpiralPoint update, boolean exitOnFind) {
+		spiralSearch(MAX_RADIUS, update, exitOnFind);
 	}
 	
 	protected void spiralSearch(int maxRadius, SpiralPoint update, boolean exitOnFind) {

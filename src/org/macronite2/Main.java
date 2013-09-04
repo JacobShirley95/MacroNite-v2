@@ -42,8 +42,7 @@ public class Main implements Rs2ClassLoaderListener, Rs2CanvasListener, Runnable
 	public JTextField encodeField = new JTextField("" + encodeInt);
 	public Main() {
 		Rs2Canvas.canvasListeners.add(this);
-		System.out.println((int) '\uffff');
-
+	
 		JFrame frame = new JFrame();
 		frame.setVisible(true);
 		frame.setTitle("Rs2Applet v0.1");

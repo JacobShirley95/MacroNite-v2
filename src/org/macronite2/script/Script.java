@@ -10,18 +10,10 @@ import org.macronite2.script.menus.RSOptionsMenu;
 public abstract class Script implements RSPaintListener {
 	public static final int EXIT_CODE = -1;
 
-	private SoftwareRenderer renderer;
-	protected RSOptionsMenu menu;
-
-	protected RSBackpack backpack;
-
 	protected ScriptContext context;
 
 	public Script(ScriptContext sC) {
 		this.context = sC;
-		this.renderer = (SoftwareRenderer) context.runescape.getCurrentRenderer();
-		this.menu = new RSOptionsMenu(context);
-		//this.backpack = new RSBackpack();
 	}
 
 	public abstract int run();
@@ -31,11 +23,7 @@ public abstract class Script implements RSPaintListener {
 	}
 
 	protected final void sleep(long time) {
-		try {
-			Thread.sleep(time);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+		context.sleep(time);
 	}
 	
 	protected boolean isLoggedIn() {
