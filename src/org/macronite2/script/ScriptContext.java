@@ -21,10 +21,12 @@ public class ScriptContext {
 	public Client runescape;
 	
 	public String accountName;
+	
 	public RSLocator locator;
-	public RSCompass compass;
 	public RSInput input;
 	public RSMath math;
+	
+	public RSCompass compass;
 	public RSBackpack backpack;
 	public RSAbilityBar abilityBar;
 	public RSBank bank;

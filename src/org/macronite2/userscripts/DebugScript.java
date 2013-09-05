@@ -222,9 +222,9 @@ public class DebugScript extends Script {
 		
 		RSBank bank = new RSBank(context);
 		if (bank.isOpen()) {
-			context.input.typeKey(KeyEvent.VK_ENTER);
-			context.input.typeKeys("My bank is open!");
-			context.input.typeKey(KeyEvent.VK_ENTER);
+			context.input.type(KeyEvent.VK_ENTER);
+			context.input.type("My bank is open!");
+			context.input.type(KeyEvent.VK_ENTER);
 		}
 		
 		return EXIT_CODE;
