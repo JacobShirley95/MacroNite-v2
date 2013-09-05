@@ -1,11 +1,13 @@
 package org.macronite2.script.map;
 
 import java.awt.Point;
+import java.awt.event.KeyEvent;
 
 import org.macronite2.hooks.Client;
 import org.macronite2.hooks.MapBase;
 import org.macronite2.script.ScriptContext;
 import org.macronite2.script.components.RSMinimapComponent;
+import org.macronite2.script.math.RSMath;
 
 public class RSCompass {
 	public static int[] SINE_ARRAY = new int[16384];
@@ -40,6 +42,18 @@ public class RSCompass {
 	
 	public double getCompassAngleRadians() {
 		return ((16383.0 - getCompassAngle()) / 16383.0) * (2 * Math.PI);
+	}
+	
+	public void setCompass(int angle) {
+		int turn = (int)getCompassAngleDegrees() - angle;
+		int key = turn < 0 ? KeyEvent.VK_LEFT : KeyEvent.VK_RIGHT;
+		
+		context.input.pressKey(key);
+		while (!RSMath.inRange((int)getCompassAngleDegrees(), angle+10, angle+11)) {
+			context.sleep(10);
+		}
+		System.out.println("NOT IN RANGE "+getCompassAngleDegrees());
+		context.input.releaseKey(key);
 	}
 
 	public Point tileToMM(int x, int y) {

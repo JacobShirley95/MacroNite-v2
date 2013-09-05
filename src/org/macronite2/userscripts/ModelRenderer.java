@@ -33,9 +33,8 @@ public class ModelRenderer extends Script {
 		if (!isLoggedIn())
 			return -1;
 		
-		context.input.type(KeyEvent.VK_ENTER);
-		context.input.type("Hello!");
-		context.input.type(KeyEvent.VK_ENTER);
+		//context.input.type(KeyEvent.VK_ENTER);
+		context.compass.setCompass(200);
 		
 		return 0;
 	}

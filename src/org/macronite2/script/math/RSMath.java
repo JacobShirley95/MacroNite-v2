@@ -25,4 +25,12 @@ public class RSMath {
 		MapBase base = context.runescape.getMapBase();
 		return new Point(base.getX()+x, base.getY()+y);
 	}
+	
+	public static final int random(int range) {
+		return (int)Math.random()*range;
+	}
+	
+	public static final boolean inRange(int i, int low, int high) {
+		return i >= i && i <= high;
+	}
 }

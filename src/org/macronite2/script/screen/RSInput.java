@@ -9,7 +9,7 @@ import org.macronite2.hooks.KeyboardHandler;
 import org.macronite2.hooks.MouseHandler;
 import org.macronite2.rsapplet.Rs2Canvas;
 import org.macronite2.script.ScriptContext;
-import org.macronite2.script.util.Utils;
+import org.macronite2.script.math.RSMath;
 
 public class RSInput {
 	private static final String SHIFT_KEYS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ¬!\"£$%^&*()_+{}:@~<>?|€";
@@ -32,7 +32,7 @@ public class RSInput {
 		MouseHandler handler = context.runescape.getMouseHandler();
 		MouseEvent event = new MouseEvent(Rs2Canvas.instance, MouseEvent.MOUSE_PRESSED, System.currentTimeMillis(), 0, x, y, 1, false, button);
 		handler.mousePressed(event);
-		context.sleep(100+Utils.random(20));
+		context.sleep(100+RSMath.random(20));
 		event = new MouseEvent(Rs2Canvas.instance, MouseEvent.MOUSE_RELEASED, System.currentTimeMillis(), 0, x, y, 1, false, button);
 		handler.mouseReleased(event);
 	}
@@ -73,18 +73,31 @@ public class RSInput {
 	
 	public void type(int c, int time, int mods) {
 		KeyboardHandler handler = context.runescape.getKeyboardHandler();
-		
 		int key = KeyEvent.getExtendedKeyCodeForChar(c);
-		
-		KeyEvent event = new KeyEvent(Rs2Canvas.instance, KeyEvent.KEY_PRESSED, System.currentTimeMillis(), mods, key, (char)c, KeyEvent.KEY_LOCATION_STANDARD);
+
+		KeyEvent event = new KeyEvent(Rs2Canvas.instance, KeyEvent.KEY_PRESSED, System.currentTimeMillis(), 0, key, (char)c, KeyEvent.KEY_LOCATION_STANDARD);
 		handler.keyPressed(event);
+		
+		event = new KeyEvent(Rs2Canvas.instance, KeyEvent.KEY_TYPED, System.currentTimeMillis(), mods, KeyEvent.VK_UNDEFINED, (char)c, KeyEvent.KEY_LOCATION_UNKNOWN);
+		handler.keyTyped(event);
 	
-		//event = new KeyEvent(Rs2Canvas.instance, KeyEvent.KEY_TYPED, System.currentTimeMillis(), mods, KeyEvent.VK_UNDEFINED, (char)c, KeyEvent.KEY_LOCATION_UNKNOWN);
-		//handler.keyTyped(event);
-	
-		context.sleep(time+Utils.random(20));
+		context.sleep(time+RSMath.random(20));
 	
 		event = new KeyEvent(Rs2Canvas.instance, KeyEvent.KEY_RELEASED, System.currentTimeMillis(), mods, key, (char)c, KeyEvent.KEY_LOCATION_STANDARD);
-		handler.keyTyped(event);
+		handler.keyReleased(event);
+	}
+	
+	public void pressKey(int c) {
+		KeyboardHandler handler = context.runescape.getKeyboardHandler();
+
+		KeyEvent event = new KeyEvent(Rs2Canvas.instance, KeyEvent.KEY_PRESSED, System.currentTimeMillis(), 0, c, (char)KeyEvent.CHAR_UNDEFINED, KeyEvent.KEY_LOCATION_STANDARD);
+		handler.keyPressed(event);
+	}
+	
+	public void releaseKey(int c) {
+		KeyboardHandler handler = context.runescape.getKeyboardHandler();
+	
+		KeyEvent event = new KeyEvent(Rs2Canvas.instance, KeyEvent.KEY_RELEASED, System.currentTimeMillis(), 0, c, (char)KeyEvent.CHAR_UNDEFINED, KeyEvent.KEY_LOCATION_STANDARD);
+		handler.keyReleased(event);
 	}
 }

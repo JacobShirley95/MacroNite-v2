@@ -81,7 +81,7 @@ public class Rs2Canvas extends Canvas implements MouseMotionListener, KeyListene
 	public void keyPressed(KeyEvent arg0) {
 		KeyEvent ke = new KeyEvent(this, KeyEvent.KEY_PRESSED, System.currentTimeMillis(), 0, KeyEvent.getExtendedKeyCodeForChar('s'), 's', KeyEvent.KEY_LOCATION_STANDARD);
 		
-		//System.out.println(arg0);
+		System.out.println(arg0);
 	}
 
 	@Override
@@ -92,6 +92,6 @@ public class Rs2Canvas extends Canvas implements MouseMotionListener, KeyListene
 
 	@Override
 	public void keyTyped(KeyEvent arg0) {
-		System.out.println(arg0);
+		//System.out.println(arg0);
 	}
 }
