@@ -71,12 +71,12 @@ public class RSTile implements RSScreenObject{
 	}
 	
 	public Point toMM() {
-		return context.compass.tileToMM(x, y);
+		return context.locator.tileToMM(x, y);
 	}
 	
 	private Point tileToScreen(int x, int y, int heightOffset) {
 		int height = context.runescape.getTileHeight(x << 9, y << 9, plane);
-		return context.math.getScreenPosHidden(x << 9, height-heightOffset, y << 9);
+		return context.locator.getScreenPosHidden(x << 9, height-heightOffset, y << 9);
 	}
 
 	@Override

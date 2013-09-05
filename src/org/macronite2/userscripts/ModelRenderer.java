@@ -1,7 +1,5 @@
 package org.macronite2.userscripts;
 
-import java.awt.event.KeyEvent;
-
 import org.macronite2.script.Script;
 import org.macronite2.script.ScriptContext;
 

@@ -1,15 +1,20 @@
 package org.macronite2.script.location;
 
 import java.awt.Point;
+
+import org.macronite2.hooks.MapBase;
 import org.macronite2.hooks.RSInterfaceGroup;
+import org.macronite2.hooks.Renderer;
 import org.macronite2.hooks.WidgetNode;
 import org.macronite2.script.ScriptContext;
 import org.macronite2.script.components.RSComponent;
+import org.macronite2.script.components.RSMinimapComponent;
 import org.macronite2.script.entities.RSDoor;
 import org.macronite2.script.entities.RSNPC;
 import org.macronite2.script.entities.RSPlayer;
 import org.macronite2.script.items.RSGroundItem;
 import org.macronite2.script.items.RSInterfaceItem;
+import org.macronite2.script.map.RSCompass;
 import org.macronite2.script.util.node.NodeList;
 
 public abstract class RSLocator {
@@ -19,6 +24,8 @@ public abstract class RSLocator {
 	public RSLocator(ScriptContext context) {
 		this.context = context;
 	}
+	
+	protected RSMinimapComponent compass;
 	
 	public abstract RSDoor findDoor(final int openID, int mode);
 	public abstract RSNPC findNPC(String name);
@@ -97,6 +104,46 @@ public abstract class RSLocator {
 			if (curDir % 2 == 0)
 				curR++;
 		}
+	}
+	
+	public Point tileToMM(int x, int y) {
+		if (compass == null)
+			compass = new RSMinimapComponent(context);
+		
+		int angle = context.compass.getCompassAngle();
+		
+		int angleX = RSCompass.SINE_ARRAY[angle];
+		int angleY = RSCompass.COS_ARRAY[angle];
+		
+		MapBase base = context.getMapBase();
+		
+		int startX = context.runescape.getMyPlayer().getLocX1() << 9;
+		int startY = context.runescape.getMyPlayer().getLocY1() << 9;
+		
+		int tileX = x - base.getX() << 9;
+		int tileY = y - base.getY() << 9;
+		
+		int distX = tileX / 128 - startX / 128;
+        int distY = tileY / 128 - startY / 128;
+		
+        int var13 = angleY * distX + angleX * distY >> 14;
+        int var14 = distY * angleY - distX * angleX >> 14;
+        
+		Point comp = compass.getCentrePoint();
+		
+		return new Point(comp.x + var13, comp.y - var14);
+	}
+	
+	public Point getScreenPosHidden(float x, float y, float z) {
+		Renderer renderer = context.runescape.getCurrentRenderer();
+		float[] out = new float[3];
+		renderer.toScreen(x, y, z, out);
+		return new Point((int)out[0], (int)out[1]);
+	}
+	
+	public Point localToGlobal(int x, int y) {
+		MapBase base = context.runescape.getMapBase();
+		return new Point(base.getX()+x, base.getY()+y);
 	}
 	
 	protected abstract class SpiralPoint {

@@ -24,9 +24,7 @@ public class RSComponent implements RSInterfaceObject, RSScreenObject{
 	
 	public org.macronite2.hooks.RSInterface rsInterface;
 	private ScriptContext context;
-	
-	private static final HashMap<Integer, RSComponent> loaded = new HashMap<Integer, RSComponent>();
-	
+
 	public RSComponent(ScriptContext context, RSComponent parent, RSInterface rsInterface) {
 		this.id = rsInterface.getID();
 		this.parentID = rsInterface.getParentID();

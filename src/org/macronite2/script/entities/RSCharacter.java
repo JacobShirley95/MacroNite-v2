@@ -52,7 +52,7 @@ public abstract class RSCharacter extends RSEntity {
 	}
 	
 	public Point globalPos() {
-		return context.math.localToGlobal(character.getLocX1(), character.getLocY1());
+		return context.locator.localToGlobal(character.getLocX1(), character.getLocY1());
 	}
 	
 	public Point localPos() {

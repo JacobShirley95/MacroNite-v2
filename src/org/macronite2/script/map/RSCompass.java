@@ -1,13 +1,10 @@
 package org.macronite2.script.map;
 
-import java.awt.Point;
 import java.awt.event.KeyEvent;
 
 import org.macronite2.hooks.Client;
-import org.macronite2.hooks.MapBase;
 import org.macronite2.script.ScriptContext;
-import org.macronite2.script.components.RSMinimapComponent;
-import org.macronite2.script.math.RSMath;
+import org.macronite2.script.Utils;
 
 public class RSCompass {
 	public static int[] SINE_ARRAY = new int[16384];
@@ -28,8 +25,6 @@ public class RSCompass {
 		this.context = context;
 	}
 	
-	private static RSMinimapComponent compass = null;
-
 	public int getCompassAngle() {
 		Client cl = context.runescape;
 		return (int) (cl.getCameraAngle() * 2607.5945876176133D)
@@ -49,38 +44,9 @@ public class RSCompass {
 		int key = turn < 0 ? KeyEvent.VK_LEFT : KeyEvent.VK_RIGHT;
 		
 		context.input.pressKey(key);
-		while (!RSMath.inRange((int)getCompassAngleDegrees(), angle+10, angle+11)) {
+		while (!Utils.inRange((int)getCompassAngleDegrees(), angle-10, angle+10)) {
 			context.sleep(10);
 		}
-		System.out.println("NOT IN RANGE "+getCompassAngleDegrees());
 		context.input.releaseKey(key);
-	}
-
-	public Point tileToMM(int x, int y) {
-		if (compass == null)
-			compass = new RSMinimapComponent(context);
-		
-		int angle = getCompassAngle();
-		
-		int angleX = SINE_ARRAY[angle];
-		int angleY = COS_ARRAY[angle];
-		
-		MapBase base = context.getMapBase();
-		
-		int startX = context.runescape.getMyPlayer().getLocX1() << 9;
-		int startY = context.runescape.getMyPlayer().getLocY1() << 9;
-		
-		int tileX = x - base.getX() << 9;
-		int tileY = y - base.getY() << 9;
-		
-		int distX = tileX / 128 - startX / 128;
-        int distY = tileY / 128 - startY / 128;
-		
-        int var13 = angleY * distX + angleX * distY >> 14;
-        int var14 = distY * angleY - distX * angleX >> 14;
-        
-		Point comp = compass.getCentrePoint();
-		
-		return new Point(comp.x + var13, comp.y - var14);
 	}
 }

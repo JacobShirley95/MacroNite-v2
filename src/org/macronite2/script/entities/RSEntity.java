@@ -36,8 +36,8 @@ public abstract class RSEntity implements RSScreenObject{
 	
 	public Point toMM() {
 		GameCoord pos = entity.getWorldPos();
-		Point p = context.math.localToGlobal((int)pos.getX() >> 9, (int)pos.getZ() >> 9);
-		return context.compass.tileToMM(p.x, p.y);
+		Point p = context.locator.localToGlobal((int)pos.getX() >> 9, (int)pos.getZ() >> 9);
+		return context.locator.tileToMM(p.x, p.y);
 	}
 	
 	public void clickMM() {
