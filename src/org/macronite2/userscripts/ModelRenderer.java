@@ -1,14 +1,23 @@
 package org.macronite2.userscripts;
 
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+
+import org.macronite2.hooks.InteractableObject;
+import org.macronite2.hooks.Player;
+import org.macronite2.hooks.SModel;
+import org.macronite2.hooks.Tile;
+import org.macronite2.hooks.WorldObjects;
 import org.macronite2.script.Script;
 import org.macronite2.script.ScriptContext;
+import org.macronite2.script.models.RSModel;
 
 public class ModelRenderer extends Script {
 	public ModelRenderer(ScriptContext context) {
 		super(context);
 	}
 
-	/*@Override
+	@Override
 	public void paint(Graphics g) {
 		Graphics2D g2D = (Graphics2D) g;
 		WorldObjects objs = context.runescape.getWorldObjects();
@@ -17,14 +26,14 @@ public class ModelRenderer extends Script {
 			Tile t = objs.getTiles()[my.getPlane()][my.getLocX1() + 1][my
 					.getLocY1()];
 			if (t != null) {
-				if (t.getWallDecor() != null) {
-					DoorDecor dd = (DoorDecor) t.getWallDecor();
+				if (t.getInteractable() != null) {
+					InteractableObject obj = (InteractableObject) t.getInteractable().getObject();
 					
-					g2D.drawPolygon(new RSModel(context, (SModel)dd.getModel(), dd.getViewport()).getPolygon());
+					g2D.drawPolygon(new RSModel(context, (SModel)obj.getModel(), obj.getViewport()).getPolygon());
 				}
 			}
 		}
-	}*/
+	}
 
 	@Override
 	public int run() {
@@ -32,7 +41,7 @@ public class ModelRenderer extends Script {
 			return -1;
 		
 		//context.input.type(KeyEvent.VK_ENTER);
-		context.compass.setCompass(200);
+		//context.compass.setCompass(200);
 		
 		return 0;
 	}

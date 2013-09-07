@@ -3,6 +3,7 @@ package org.macronite2;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Toolkit;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowEvent;
@@ -21,7 +22,11 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 import javax.swing.tree.DefaultMutableTreeNode;
+
 import org.macronite2.hooks.Client;
+import org.macronite2.hooks.InteractableObject;
+import org.macronite2.hooks.Player;
+import org.macronite2.hooks.Tile;
 import org.macronite2.rsapplet.Rs2Applet;
 import org.macronite2.rsapplet.Rs2Canvas;
 import org.macronite2.rsapplet.Rs2CanvasListener;
@@ -60,7 +65,7 @@ public class Main implements Rs2ClassLoaderListener, Rs2CanvasListener, Runnable
 			System.out.println("error");
 			System.exit(1);
 		}
-		frame.setSize(765, 563);
+		frame.setSize(applet.getSize());
 
 		frame.addWindowListener(new WindowListener() {
 
@@ -137,6 +142,14 @@ public class Main implements Rs2ClassLoaderListener, Rs2CanvasListener, Runnable
 		debugFrame.setSize(300, 300);
 		debugFrame.setAlwaysOnTop(true);
 		//debugFrame.pack();
+		centreWindow(frame);
+	}
+	
+	public static void centreWindow(JFrame frame) {
+	    Dimension dimension = Toolkit.getDefaultToolkit().getScreenSize();
+	    int x = (int) ((dimension.getWidth() - frame.getWidth()) / 2);
+	    int y = (int) ((dimension.getHeight() - frame.getWidth()) / 2);
+	    frame.setLocation(x, y);
 	}
 
 	JTextArea output;
@@ -202,17 +215,41 @@ public class Main implements Rs2ClassLoaderListener, Rs2CanvasListener, Runnable
 		searchPanel.add(search);
 		
 		BorderLayout layout = new BorderLayout();
+		
 		layout.addLayoutComponent(searchPanel, BorderLayout.NORTH);
 		layout.addLayoutComponent(resultsPane, BorderLayout.CENTER);
 		frame.getContentPane().setLayout(layout);
 		frame.add(searchPanel);
 		frame.add(resultsPane);
-		frame.setVisible(true);
+		//frame.setVisible(true);
 	
 		try {
 			while (!stopT) {
-				sc.run();
+				//sc.run();
 				
+				/*if (cl.getWorldObjects() != null) {
+					Tile[][][] tiles = cl.getWorldObjects().getTiles();
+					Player my = cl.getMyPlayer();
+					Tile t = tiles[my.getPlane()][my.getLocX1()+2][my.getLocY1()];
+					if (t != null) {
+						/*int c = 0;
+						Field f2 = t.getClass().getDeclaredField("i");
+						f2.setAccessible(true);
+						Object o = f2.get(t);
+						if (o != null) {
+						Field[] fields = o.getClass().getDeclaredFields();
+						for (Field f : fields) {
+							if (!Modifier.isStatic(f.getModifiers()) && !f.getType().isPrimitive()) {
+								f.setAccessible(true);
+								System.out.println(c+++": "+f.getName()+", "+f.get(o));
+							}
+						}
+						}
+						if (t.getInteractable() != null) {
+							System.out.println(((InteractableObject)t.getInteractable().getObject()).getID());
+						}
+					}
+				}*/
 				Thread.sleep(1000);
 			}
 		} catch (Exception e) {

@@ -12,4 +12,9 @@ public interface SModel extends Model{
 	public float getScaleX();
 	public float getScaleY();
 	public RenderData getRenderData();
+	
+	public int getShowCount();
+	public short[] getInds1();
+	public short[] getInds2();
+	public short[] getInds3();
 }

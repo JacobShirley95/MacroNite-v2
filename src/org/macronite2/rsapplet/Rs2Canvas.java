@@ -2,6 +2,8 @@ package org.macronite2.rsapplet;
 
 import java.awt.Canvas;
 import java.awt.Graphics;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -28,7 +30,7 @@ public class Rs2Canvas extends Canvas implements MouseMotionListener, KeyListene
 		//addKeyListener(this);
 
 		gameImage = new BufferedImage(1024, 800, BufferedImage.TYPE_INT_RGB);
-		/*addComponentListener(new ComponentAdapter() {
+		addComponentListener(new ComponentAdapter() {
 
 			@Override
 			public void componentResized(ComponentEvent e) {
@@ -39,7 +41,7 @@ public class Rs2Canvas extends Canvas implements MouseMotionListener, KeyListene
 				gameImage = new BufferedImage(width, height,
 						BufferedImage.TYPE_INT_RGB);
 			}
-		});*/
+		});
 		for (Rs2CanvasListener listener : canvasListeners)
 			listener.onInitialise(this);
 		instance = this;

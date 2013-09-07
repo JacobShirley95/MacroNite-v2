@@ -105,7 +105,7 @@ public class Rs2Applet extends Applet {
 		Rs2AppletStub stub = new Rs2AppletStub(root
 				+ parseArg(search(jsInfoPage, archiveRegex, 1)), root, paramMap);
 		setStub(stub);
-		setPreferredSize(new Dimension(765, 553));
+		setPreferredSize(new Dimension(1024, 800));
 	}
 
 	private static String search(String what, String regex, int group) {
