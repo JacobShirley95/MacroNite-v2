@@ -18,14 +18,12 @@ import org.macronite2.script.map.RSCompass;
 import org.macronite2.script.util.node.NodeList;
 
 public abstract class RSLocator {
-	private static final int MAX_RADIUS = 52;
-	
 	protected ScriptContext context;
 	public RSLocator(ScriptContext context) {
 		this.context = context;
 	}
 	
-	protected RSMinimapComponent compass;
+	private RSMinimapComponent compass;
 	
 	public abstract RSDoor findDoor(final int openID, int mode);
 	public abstract RSNPC findNPC(String name);
@@ -77,7 +75,7 @@ public abstract class RSLocator {
 	}
 	
 	protected void spiralSearch(SpiralPoint update, boolean exitOnFind) {
-		spiralSearch(MAX_RADIUS, update, exitOnFind);
+		spiralSearch(compass.getWidth()/2, update, exitOnFind);
 	}
 	
 	protected void spiralSearch(int maxRadius, SpiralPoint update, boolean exitOnFind) {

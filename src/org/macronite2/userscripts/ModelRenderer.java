@@ -26,10 +26,10 @@ public class ModelRenderer extends Script {
 			Tile t = objs.getTiles()[my.getPlane()][my.getLocX1() + 1][my
 					.getLocY1()];
 			if (t != null) {
-				if (t.getInteractable() != null) {
+				if (t.getInteractable() != null && t.getInteractable().getObject() instanceof InteractableObject) {
 					InteractableObject obj = (InteractableObject) t.getInteractable().getObject();
 					
-					g2D.drawPolygon(new RSModel(context, (SModel)obj.getModel(), obj.getViewport()).getPolygon());
+					new RSModel(context, (SModel)obj.getModel(), obj.getViewport()).draw(g2D);
 				}
 			}
 		}

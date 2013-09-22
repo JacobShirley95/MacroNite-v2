@@ -2,7 +2,6 @@ package org.macronite2.script.components;
 
 import java.awt.Point;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import org.macronite2.hooks.RSInterface;
@@ -22,7 +21,7 @@ public class RSComponent implements RSInterfaceObject, RSScreenObject{
 	public RSComponent parent;
 	public List<RSComponent> children;
 	
-	public org.macronite2.hooks.RSInterface rsInterface;
+	public RSInterface rsInterface;
 	private ScriptContext context;
 
 	public RSComponent(ScriptContext context, RSComponent parent, RSInterface rsInterface) {
@@ -82,6 +81,14 @@ public class RSComponent implements RSInterfaceObject, RSScreenObject{
 	@Override
 	public int getHeight() {
 		return rsInterface.getHeight();
+	}
+	
+	public int getScrollX() {
+		return rsInterface.getScrollX();
+	}
+	
+	public int getScrollY() {
+		return rsInterface.getScrollY();
 	}
 	
 	public String getTitle() {

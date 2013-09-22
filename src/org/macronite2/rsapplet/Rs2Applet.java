@@ -50,8 +50,7 @@ public class Rs2Applet extends Applet {
 	public Rs2Applet() {
 		try {
 			classLoader = new Rs2ClassLoader(
-					new File(
-							"C:/Users/Jake/workspace/MacroUpdater2/runescape-deob3.jar")
+					new File("../MacroUpdater2/runescape.jar")
 							.toURI().toURL());
 
 			clazzLoader = new ASMClassLoader(classLoader);
