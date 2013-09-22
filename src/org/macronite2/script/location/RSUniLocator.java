@@ -28,7 +28,7 @@ public class RSUniLocator extends RSLocator {
 	public RSDoor findDoor(final int openID, int mode) {
 		final Tile[][] tiles = context.runescape.getWorldObjects().getTiles()[context.runescape.getMyPlayer().getPlane()];
 		final List<RSDoor> doors = new ArrayList<RSDoor>();
-		spiralSearch(52, new SpiralPoint() {
+		spiralSearch(new SpiralPoint() {
 			@Override
 			public boolean found(int x, int y) {
 				WallDecor decor = tiles[x][y].getWallDecor();
@@ -58,7 +58,7 @@ public class RSUniLocator extends RSLocator {
 			}
 		}
 		final List<RSNPC> found = new ArrayList<RSNPC>();
-		spiralSearch(52, new SpiralPoint() {
+		spiralSearch(new SpiralPoint() {
 			@Override
 			public boolean found(int x, int y) {
 				for (RSNPC npc : npcsList) {

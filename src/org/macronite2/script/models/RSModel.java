@@ -8,9 +8,11 @@ import java.awt.Polygon;
 import org.macronite2.hooks.SModel;
 import org.macronite2.hooks.Viewport;
 import org.macronite2.script.ScriptContext;
+import org.macronite2.script.Utils;
+import org.macronite2.script.screen.RSDrawable;
 import org.macronite2.script.screen.RSScreenObject;
 
-public class RSModel implements RSScreenObject{
+public class RSModel implements RSScreenObject, RSDrawable{
 	private SModel model;
 	private Viewport viewport;
 	private ScriptContext context;
@@ -19,64 +21,6 @@ public class RSModel implements RSScreenObject{
 		this.model = model;
 		this.viewport = viewport;
 		this.context = context;
-	}
-	
-	public Polygon getPolygon() {
-		RenderData renderData = new RenderData(new float[16]);
-		renderData.setViewport(viewport);
-
-		RenderData rd3 = new RenderData(model.getRenderData()
-				.getData());
-		renderData.transform(rd3);
-
-		int size = model.getVertexCount();
-		
-		int[] xcoords = model.getVerticesX();
-		int[] ycoords = model.getVerticesY();
-		int[] zcoords = model.getVerticesZ();
-		
-		int[] xes = new int[size];
-		int[] yes = new int[size];
-
-		for (int i = 0; i < size; i++) {
-			int var26 = xcoords[i];
-			int var27 = ycoords[i];
-			int var28 = zcoords[i];
-
-			float var29 = renderData.data[2] * var26
-					+ renderData.data[6] * var27 + renderData.data[10]
-					* var28 + renderData.data[14];
-			float var30 = renderData.data[3] * var26
-					+ renderData.data[7] * var27 + renderData.data[11]
-					* var28 + renderData.data[15];
-			if (var29 >= -var30) {
-				float var31 = renderData.data[0] * var26
-						+ renderData.data[4] * var27
-						+ renderData.data[8] * var28
-						+ renderData.data[12];
-				float var32 = renderData.data[1] * var26
-						+ renderData.data[5] * var27
-						+ renderData.data[9] * var28
-						+ renderData.data[13];
-
-				float renderX = model.getRenderX();
-				float renderY = model.getRenderY();
-				float scaleX = model.getScaleX();
-				float scaleY = model.getScaleY();
-
-				float x = ((int) (renderX + (scaleX * var31)
-						/ var30));
-				float y = ((int) (renderY + (scaleY * var32)
-						/ var30));
-
-				xes[i] = (int)x;
-				yes[i] = (int)y;
-			} else {
-				xes[i] = -999999;
-			}
-		}
-
-		return new Polygon(xes, yes, xes.length);
 	}
 	
 	public void draw(Graphics g) {
@@ -136,10 +80,14 @@ public class RSModel implements RSScreenObject{
 			}
 		}
 		
+		short[] inds1 = model.getInds1();
+		short[] inds2 = model.getInds2();
+		short[] inds3 = model.getInds3();
+		
 		for (int i = 0; i < model.getShowCount(); i++) {
-			int i1 = model.getInds1()[i];
-			int i2 = model.getInds2()[i];
-			int i3 = model.getInds3()[i];
+			int i1 = inds1[i];
+			int i2 = inds2[i];
+			int i3 = inds3[i];
 			g2D.drawLine(xes[i1], yes[i1], xes[i2], yes[i2]);
 			g2D.drawLine(xes[i2], yes[i2], xes[i3], yes[i3]);
 			g2D.drawLine(xes[i1], yes[i1], xes[i3], yes[i3]);
@@ -148,9 +96,89 @@ public class RSModel implements RSScreenObject{
 	
 	@Override
 	public Point getCentrePoint() {
-		Polygon polygon = getPolygon();
-		int p = polygon.npoints/2;
-		return new Point(polygon.xpoints[p], polygon.ypoints[p]);
+		int mid = (model.getVertexCount()/2)-Utils.randomRange(-10, 10);
+		
+		RenderData renderData = new RenderData(new float[16]);
+		renderData.setViewport(viewport);
+
+		RenderData rd3 = new RenderData(model.getRenderData()
+				.getData());
+		renderData.transform(rd3);
+
+		int size = model.getVertexCount();
+		
+		int[] xcoords = model.getVerticesX();
+		int[] ycoords = model.getVerticesY();
+		int[] zcoords = model.getVerticesZ();
+
+		for (int i = mid; i < size; i++) {
+			int var26 = xcoords[i];
+			int var27 = ycoords[i];
+			int var28 = zcoords[i];
+
+			float var29 = renderData.data[2] * var26
+					+ renderData.data[6] * var27 + renderData.data[10]
+					* var28 + renderData.data[14];
+			float var30 = renderData.data[3] * var26
+					+ renderData.data[7] * var27 + renderData.data[11]
+					* var28 + renderData.data[15];
+			if (var29 >= -var30) {
+				float var31 = renderData.data[0] * var26
+						+ renderData.data[4] * var27
+						+ renderData.data[8] * var28
+						+ renderData.data[12];
+				float var32 = renderData.data[1] * var26
+						+ renderData.data[5] * var27
+						+ renderData.data[9] * var28
+						+ renderData.data[13];
+
+				float renderX = model.getRenderX();
+				float renderY = model.getRenderY();
+				float scaleX = model.getScaleX();
+				float scaleY = model.getScaleY();
+
+				float x = ((int) (renderX + (scaleX * var31)
+						/ var30));
+				float y = ((int) (renderY + (scaleY * var32)
+						/ var30));
+
+				return new Point((int)x, (int)y);
+			} else {
+				var26 = xcoords[mid-i];
+				var27 = ycoords[mid-i];
+				var28 = zcoords[mid-i];
+
+				var29 = renderData.data[2] * var26
+						+ renderData.data[6] * var27 + renderData.data[10]
+						* var28 + renderData.data[14];
+				var30 = renderData.data[3] * var26
+						+ renderData.data[7] * var27 + renderData.data[11]
+						* var28 + renderData.data[15];
+				if (var29 >= -var30) {
+					float var31 = renderData.data[0] * var26
+							+ renderData.data[4] * var27
+							+ renderData.data[8] * var28
+							+ renderData.data[12];
+					float var32 = renderData.data[1] * var26
+							+ renderData.data[5] * var27
+							+ renderData.data[9] * var28
+							+ renderData.data[13];
+
+					float renderX = model.getRenderX();
+					float renderY = model.getRenderY();
+					float scaleX = model.getScaleX();
+					float scaleY = model.getScaleY();
+
+					float x = ((int) (renderX + (scaleX * var31)
+							/ var30));
+					float y = ((int) (renderY + (scaleY * var32)
+							/ var30));
+
+					return new Point((int)x, (int)y);
+				}
+			}
+		}
+		return null;
 	}
 
 	@Override

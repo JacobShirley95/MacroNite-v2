@@ -225,7 +225,7 @@ public class Main implements Rs2ClassLoaderListener, Rs2CanvasListener, Runnable
 	
 		try {
 			while (!stopT) {
-				//sc.run();
+				sc.run();
 				
 				/*if (cl.getWorldObjects() != null) {
 					Tile[][][] tiles = cl.getWorldObjects().getTiles();
