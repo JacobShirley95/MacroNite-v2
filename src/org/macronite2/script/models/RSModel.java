@@ -35,16 +35,13 @@ public class RSModel implements RSScreenObject{
 		int[] ycoords = model.getVerticesY();
 		int[] zcoords = model.getVerticesZ();
 		
-		int[] xes = new int[model.getShowCount()];
-		int[] yes = new int[model.getShowCount()];
+		int[] xes = new int[size];
+		int[] yes = new int[size];
 
-		for (int i = 0; i < model.getShowCount(); i++) {
-			int i1 = model.getInds1()[i];
-			int i2 = model.getInds2()[i];
-			int i3 = model.getInds3()[i];
-			int var26 = (xcoords[i1]);// + xcoords[i2] + xcoords[i3])/3;
-			int var27 = (ycoords[i2]);// + ycoords[i2] + ycoords[i3])/3;
-			int var28 = (zcoords[i3]);// + zcoords[i2] + zcoords[i3])/3;
+		for (int i = 0; i < size; i++) {
+			int var26 = xcoords[i];
+			int var27 = ycoords[i];
+			int var28 = zcoords[i];
 
 			float var29 = renderData.data[2] * var26
 					+ renderData.data[6] * var27 + renderData.data[10]
@@ -78,9 +75,7 @@ public class RSModel implements RSScreenObject{
 				xes[i] = -999999;
 			}
 		}
-		
-		//System.out.println("show: "+model.getShowCount()+", size: "+size);
-		
+
 		return new Polygon(xes, yes, xes.length);
 	}
 	
@@ -100,16 +95,13 @@ public class RSModel implements RSScreenObject{
 		int[] ycoords = model.getVerticesY();
 		int[] zcoords = model.getVerticesZ();
 		
-		int[] xes = new int[size];//new int[model.getShowCount()];
-		int[] yes = new int[size];//new int[model.getShowCount()];
+		int[] xes = new int[size];
+		int[] yes = new int[size];
 
 		for (int i = 0; i < size; i++) {
-		//	int i1 = model.getInds1()[i];
-			//int i2 = model.getInds2()[i];
-			//int i3 = model.getInds3()[i];
-			int var26 = (xcoords[i]);// + xcoords[i2] + xcoords[i3])/3;
-			int var27 = (ycoords[i]);// + ycoords[i2] + ycoords[i3])/3;
-			int var28 = (zcoords[i]);// + zcoords[i2] + zcoords[i3])/3;
+			int var26 = xcoords[i];
+			int var27 = ycoords[i];
+			int var28 = zcoords[i];
 
 			float var29 = renderData.data[2] * var26
 					+ renderData.data[6] * var27 + renderData.data[10]
